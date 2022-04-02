@@ -1,0 +1,153 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% load blog_tags %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+
+
+{% block content %}
+    <style>
+        a.form-remove:link {
+            color: white;
+        }
+
+        a.form-remove {
+            background-color: white;
+        }
+        #show_spinner{
+            position: absolute;
+            top: 0; bottom: 0; left: 0; right: 0;
+            {#visibility: hidden;#}
+        }
+        .loading {
+  background: transparent url({% static 'img/spinner.gif' %}) center no-repeat;
+}
+    </style>
+    <div id="show_spinner">
+
+    </div>
+    <div class="container" style="margin-top: 100px; margin-bottom: 50px;">
+        <div class="row">
+            <div class="col-md-12 mt-5">
+                {% if story %}
+                    <div style="background-color: #23241f; color: white">
+                        <h2 class="mt-2 text-center">Your Story</h2>
+                        <h4>{{ story.story_title }}</h4>
+                        {{ story.story_content }}
+                    </div>
+                    <div>
+                        <a href="{% url 'picture-story-update' story.id story.slug story.get_full_name %}"
+                           class="btn btn-blue">Update Story</a>
+                    </div>
+                {% endif %}
+                <br>
+
+                <form action="" id="upload" method="post" enctype="multipart/form-data" style="padding: 5px;">
+                    {% csrf_token %}
+                    {% if not story %}
+                        <h2 class="mt-2">Your Story</h2> <br>
+                        {{ story_form.story_title.label_tag }}
+                        {{ story_form.story_title|add_class:"form-control" }}
+
+                        {{ story_form.story_content.label_tag }}
+                        {{ story_form.story_content|add_class:"form-control" }}
+                    {% endif %}
+                    <h2 class="mt-2">Upload Media</h2> <br>
+                    {{ form.title_of_the_picture.label_tag }}
+                    {{ form.title_of_the_picture|add_class:"form-control" }}
+                    {{ form.describe_the_picture.label_tag }}
+                    {{ form.describe_the_picture|add_class:"form-control" }}
+                    {{ form.file.label_tag }}
+                    {{ form.file|add_class:"form-control"|attr:"multiple:true" }}
+                <small class="small text-muted">Hint: Go to <a href="https://cloudconvert.com/" target="_blank">https://cloudconvert.com/</a> and convert your images to 'webp' format and video to 'webm' format. Keep img width at 500px.</small>
+{% if story.id %}
+
+
+                    <h5 class="mt-3">Click <a href="{% url 'images-large' story.id %}">here</a> for uploading a video or image files larger than 1Mb</h5>
+
+{% endif %}
+                    <input type="submit" class="btn btn-amber mb-5">
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        {% if story %}
+            {% media_pics story.id as media %}
+            {% if media %}
+                <h4 class="font-weight-light text-center mt-4 mb-0">Hello {{ user.first_name|title }}! Your Image
+                    Gallery for <i>{{ story.story_title }}</i></h4>
+                <hr class="mt-2 mb-5">
+                <div class="bg-dark white-text pl-5 mb-5">
+                    <h4 class="text-center">Images</h4>
+                    <div class="row">
+                        {% for photo in media %}
+                            <div class="col-md-4">
+                                <div class="card mb-5" style="width: 18rem; ">
+                                    <img class="card-img-top lazyload loading" loading="lazy" src="{{ photo.file.url }}" alt="{{ photo.title_of_the_picture}}">
+                                    <div class="card-body">
+                                        <h5 class="card-title"
+                                            style="color: black">{{ photo.title_of_the_picture }}</h5>
+                                        <p class="card-text">{{ photo.describe_the_picture }}</p>
+                                        {% if story.user == user %}
+                                            <a href="{% url 'clear-database' photo.id story.id %}"
+                                               class="btn btn-danger"
+                                               type="">Delete Photo</a>
+                                            <a href="{% url 'picture-update' photo.id %}"
+                                               class="btn btn-outline-light-green"
+                                               type="">Update</a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                    <!--        videos-->
+
+                    {% media_video story.id as videos %}
+                    {% if videos %}
+                        <h4 class="text-center">Videos</h4>
+                        <div class="row">
+                        {% for video in videos %}
+                            <div class="col-md-6">
+                                <video width="320" height="240" class="img-fluid img-thumbnail" controls
+                                       style="margin:25px; padding:2px; ">
+                                    <source src="{{ video.file.url }}" type="video/mp4">
+                                    <source src="{{ video.file.url }}" type="video/webm">
+                                </video>
+                                <a href="{% url 'clear-database' video.id story.id %}" class="btn btn-danger"
+                                   type="">Delete Video</a>
+                            <a href="{% url 'picture-update' video.id %}"
+                                               class="btn btn-outline-light-green"
+                                               type="">Update</a>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    </div>
+                </div>
+        {% endif %}
+    </div>
+
+{% endblock %}
+{% block jquery %}
+<script src="{% static 'js/lazysizes.min.js' %}" async></script>
+    <script>
+    $('.card-img-top').each(function () {
+        let img = $(this);
+       img.on('load', function () {
+          img.css({background: 'none'})
+       })
+    })
+    </script>
+{% endblock jquery %}
+
+
+
+
+
+
+
+

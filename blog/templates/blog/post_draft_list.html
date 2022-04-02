@@ -1,0 +1,99 @@
+{% extends 'blog/base.html' %}
+{% load markdown_deux_tags %}
+{% block content %}
+    {% load static %}
+    <style>
+        div.view img {
+            opacity: 0.75;
+            width: 100%;
+            height: 55vh;
+            object-fit: cover;
+        }
+        @media only screen and (max-width: 600px){
+               div.view img {
+                opacity: 0.75;
+                width: 100%;
+                height: 35vh;
+                object-fit: cover;
+            }
+        }
+
+        div.view img:hover {
+            opacity: 1.0;
+            transform: scale(1.5)
+        }
+        div.view{
+            background-image: url({% static 'img/wetoobg.webp' %});
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+        }
+    a {
+    color: inherit;
+    text-decoration: none;
+}
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Rye&family=Vast+Shadow&display=swap" rel="stylesheet">
+    <div class="view" >
+    <div class="white-text text-center mb-5" style="background-color: #0b2e13; min-height: 15vh; margin-top: 100px;">
+        <h1 style="font-family: 'Rye', cursive; font-size: 40px; letter-spacing: 4px;">We Too Write</h1>
+        <h4 style="font-family: 'Vast Shadow', cursive;">Blogs For and From the Book of Life</h4>
+
+    </div>
+    <div class="container">
+    <header>
+                <form class="form-inline md-form ml-auto mb-4" action="{% url 'blog-search' %}">
+                    <input class="form-control mr-sm-2" type="search" name="q" id="id_q" placeholder="Search"
+                           aria-label="Search">
+                    <button class="btn aqua-gradient btn-rounded btn-sm my-0" type="submit">Search</button>
+                </form>
+            </header>
+    </div>
+    <div class="container">
+    {% if messages %}
+    <ul class="messages list-unstyled">
+    {% for message in messages %}
+    <li class=" white-text " style="border: 1px solid yellow; border-radius: 2px">{{ message }}</li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+        <!-- Grid row -->
+        <div class="row">
+
+            {% for article in object_list %}
+                <!-- Grid column -->
+                {% if article.is_draft %}
+
+                <div class="col-lg-6 mb-4 d-flex align-items-stretch">
+                    <!--Card-->
+                    <div class="{% cycle 'card default-color'  'card primary-color' 'card secondary-color' 'red lighten-1 '%}">
+                        <!--Card image-->
+                        {% if article.cover %}
+                        <div class="view">
+                            <img src="{{ article.cover.url }}" class="card-img-top" alt="photo">
+                        </div>
+                        {% endif %}
+                        <!--Card content-->
+                        <div class="card-body text-center" >
+                            <!--Title-->
+                            <h4 class="card-title white-text">{{ article.title|title }}</h4>
+                            <p class="" style="color: #ffff00">By <a href="{% url 'user-posts' article.author.id article.author.get_full_name %}">{{ article.author.first_name|title }}</a> on {{ article.publish|date:"d M" }}</p>
+                            <!--Text-->
+                            <p class="card-text white-text" style="text-wrap: normal; text-align: justify;">{{ article.content|truncatewords:"100" }}</p>
+                            <a href="{% url 'post-draft-detail' article.id%}" class="btn btn-outline-white btn-md waves-effect">Review</a>
+                        </div>
+
+                    </div>
+                    <!--/.Card-->
+                </div>
+
+                {% endif %}
+                <!-- Grid column -->
+                 {% empty %}
+                 <h4 class="white-text mx-auto mb-5 bg-dark" style="margin-top: 100px;">No Drafts</h4>
+            {% endfor %}
+
+        </div>
+
+    </div>
+    </div>
+{% endblock %}

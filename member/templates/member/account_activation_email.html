@@ -1,0 +1,12 @@
+{% autoescape off %}
+Hi {{ user.first_name|title }},
+
+Thanks for registering with We Too Write!
+
+Please confirm your registration and login by clicking on the link below:
+
+https://{{ domain }}{% url 'activate' uidb64=uid token=token %}
+
+By clicking the link above, you agree to our Terms and Conditions at https://www.wetoowrite.com/tnc/
+
+{% endautoescape %}

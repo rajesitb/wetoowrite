@@ -1,0 +1,58 @@
+{% extends "blog/base.html" %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% load static %}
+{% block content %}
+
+    <div class="container " style="margin: 100px;">
+        <div class="row ">
+            <div class="col-6 " style="background-color:#f8f5f5; margin: auto;">
+                {% if user.profile.image %}
+                <img class="rounded-circle " height="50" width="50" src="{{ user.profile.image.url }}" alt="">
+                {% else %}
+                <img class="rounded-circle " height="50" width="50" src="https://imgur.com/2fQoJNL.jpg" alt="">
+                {% endif %}
+                <div class="media-body d-inline">
+                    <h2 class="d-inline">{{ user.first_name }}</h2>
+                    <p class="text-secondary">{{ user.email }}</p>
+                </div>
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <fieldset class="form-group">
+                    <legend class="border-bottom mb-4">Update Profile Info</legend>
+
+
+                    <div class="md-form form-sm">
+                        <i class="fas fa-user-circle prefix "></i>
+                        {{ u_form.first_name.label_tag }}
+                        {{ u_form.first_name }}
+                    </div>
+                    <div class="md-form form-sm">
+                        <i class="fas fa-user-circle prefix "></i>
+                        {{ u_form.last_name.label_tag }}
+                        {{ u_form.last_name }}
+                    </div>
+                        <div class="md-form form-sm ">
+                        <i class="fas fa-user prefix"></i><br><br>
+                        {{ p_form.about_author.label_tag }}
+                        {{ p_form.about_author|add_class:"form-control"|attr:"placeholder: write about yourself in third person"}}
+
+                        </div>
+
+                    <div class="md-form form-sm img_text">
+                        <i class="fas fa-file-image prefix"></i><br><br>
+                        {{ p_form.image.label_tag }}
+                        {% render_field p_form.image style="margin-left:0;" %}
+                    </div>
+
+
+                </fieldset>
+                <div class="form-group">
+                    <button class="btn btn-outline-info" type="submit">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    </div>
+
+{% endblock content %}

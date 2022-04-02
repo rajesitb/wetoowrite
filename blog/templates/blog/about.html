@@ -1,0 +1,123 @@
+{% extends 'blog/base.html' %}
+{% load widget_tweaks %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <link href="https://fonts.googleapis.com/css2?family=Rye&family=Vast+Shadow&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
+
+    <div class="view">
+        <div class="white-text text-center mb-5" style="background-color: #1c2a48;; min-height: 15vh; margin-top: 100px;">
+            <h1 style="font-family: 'Rye', cursive; font-size: 40px; letter-spacing: 4px;">About We Too Write</h1>
+
+        </div>
+    </div>
+    <div class="container" style="font-family: 'Montserrat', sans-serif;">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card white-text mb-5">
+                    <div class="card-header warning-color-dark ">
+                        <h3>Wading Through Life</h3>
+                    </div>
+                    <div class="card-body ">
+                        <h4 class="card-title warning-color">Articles on Spreading Information and Wisdom</h4>
+                        <section style="color: black; text-align: justify">
+                            <h5 class="card-text">This Site intends to be a repository of articles, short essays which
+                                contain
+                                lessons from the journey of life. The readers of these articles may become wiser and
+                                approach similar life
+                                situations armed with the wisdom and information acquired from these articles. </h5>
+                            <h5 class="card-text">One article may cover only one important subject and amply draw out
+                                lessons </h5>
+                            <h5 class="card-text">The articles may be published in a series and mentioned
+                                accordingly</h5>
+                        </section>
+                    </div>
+                </div>
+                <div class="card white-text mb-5">
+                    <div class="card-header default-color-dark ">
+                        <h3>Encountering Challenges</h3>
+                    </div>
+                    <div class="card-body ">
+                        <h4 class="card-title default-color">Articles on Guidance for facing common challenges</h4>
+                        <section style="color: black; text-align: justify">
+                            <h5 class="card-text text-black-50">The Site intends to be of help to all young men and
+                                women who are stepping
+                                out of their homes to confront various challenges of life such as choosing a field for
+                                further education or choosing
+                                a career in a particular field</h5>
+                            <h5 class="card-text">This dilemma is faced by one and all but there is lack of informed and
+                                reliable guidance.</h5>
+                            <h5 class="card-text">The experience gained by us as we go through our own situations needs
+                                to be collated and this Site
+                                intends to do the same so that in times to come, reliable and trustworthy guidance and
+                                be obtained from this repository</h5>
+                        </section>
+                    </div>
+                </div>
+                <div class="card white-text mb-5">
+                    <div class="card-header primary-color-dark ">
+                        <h3>Topical Issues</h3>
+                    </div>
+                    <div class="card-body ">
+                        <h4 class="card-title primary-color">Articles Covering Current Topics</h4>
+                        <section style="color: black; text-align: justify">
+                            <h5 class="card-text text-black-50">
+                                Current issues generate the most interest. While they are already covered in detail in various
+                                publications, the Articles posted here must carry out independent, authentic and in-depth research
+                            </h5>
+                            <h5 class="card-text text-black-50">
+                                It should not just be another publication on the topic of current issues. Your analysis must be unique
+                                draw attention to newer aspects on the subject and draw lessons in the spirit of this website.
+                            </h5>
+                        </section>
+                    </div>
+                </div>
+
+                <div class="card white-text mb-5">
+                    <div class="card-header unique-color-dark ">
+                        <h3>How to Post</h3>
+                    </div>
+                    <div class="card-body ">
+                        <h4 class="card-title stylish-color">Submitting Articles</h4>
+                        <section style="color: black; text-align: justify">
+                            <h5 class="card-text text-black-50">Members who have registered with the Website are invited
+                                to post their Articles </h5>
+                            <h5 class="card-text">The members are required to agree to the <a href="{% url 'blog-tnc' %}">T&C</a> prior to
+                                registration</h5>
+                            <h5 class="card-text">The Article can be written using the Simple Mark Down Editor available
+                                on the Post page. There is help available on the editor for the same. There are handy news and twitter links to delve deep into and research on current topics</h5>
+                            <h5 class="card-text">The submitted Article will be vetted for abiding by the <a href="{% url 'blog-tnc' %}">T&C</a> of the Website.
+                            Articles meeting the criteria, will be published within one working day. In case of any aberrations, the same will be informed
+                            to the author for suitable corrections and resubmission</h5>
+                            <h5 class="card-text">The authors can update or delete their articles at any time.</h5>
+                            <h5 class="card-text">There is a commenting system for each publication. Please login and use the same to give your comments.</h5>
+
+                        </section>
+                    </div>
+                </div>
+                <div class="card testimonial-card">
+        <!-- Content -->
+        <div class="card-body">
+            <!-- Name -->
+            <h4 class="card-title">Write to Us</h4>
+            <hr>
+            <!-- Quotation -->
+            <p><img src="https://img.icons8.com/clouds/100/000000/email.png"/>
+                <a href="mailto:from.wetoowrite@gmail.com" target="_blank">We Too Write Team</a>
+            </p>
+           <a href="{% url 'privacy' %}">Privacy Policy</a>
+           <a href="{% url 'blog-tnc' %}">Terms & Conditions</a>
+        </div>
+    </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock content %}
+{% block jquery %}
+    <script>
+
+    </script>
+{% endblock jquery %}

@@ -1,0 +1,31 @@
+{% extends 'blog/base.html' %}
+{% load widget_tweaks %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="container mb-5" style="margin-top: 100px; ">
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <h4 class="bg-success white-text">{{ message }}</h4>
+                {% endfor %}
+            </div>
+        {% endif %}
+        <h2 style="background-color: #3e2723" class="text-center white-text"><strong>Picture Stories</strong></h2>
+        {% for photo_story in object_list %}
+            <img class="rounded-circle mb-2" src="{{ photo_story.story_photo.first.file.url }}" height="50px"
+                 width="50px" alt="">
+            <h4 class="d-inline ml-3">A Photo story <a
+                    href="{{ photo_story.get_absolute_url }}">{{ photo_story.story_title }}</a>
+                by {{ photo_story.user.get_full_name }} posted
+                on {{ photo_story.updated_at|date:"d M" }}</h4><br><br>
+        {% empty %}
+            <h4> No stories yet </h4>
+        {% endfor %}
+        {% if user.is_authenticated %}
+            <a href="{% url 'picture-story' %}" class="mx-auto">
+                <button class="btn btn-outline-indigo mb-5 ">Add a Picture Story</button>
+            </a>
+        {% endif %}
+    </div>
+{% endblock %}

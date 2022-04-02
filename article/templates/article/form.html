@@ -1,0 +1,32 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="container mb-5" style="margin-top: 100px;">
+        <div class="row">
+            <div class="col-md-9">
+                <form action="" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.media }}
+                    {{ form|crispy }}
+                    <button type="submit" class="btn btn-danger btn-block">Submit</button>
+                </form>
+                <div>
+                    <h4 class="text-center mt-5" style="background-color: #7d7a68; color: white;"> <strong>About the Author</strong> <br>
+                        {% if user.profile.about_author %}
+                        {{ user.profile.about_author }} </h4>
+                        {% else %}
+                            <h6> Nothing about the author uploaded yet! <a style="color: inherit" href="{% url 'profile' %}">Click here</a> to Write something about yourself.
+                        </h6>{% endif %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block jquery %}
+    <script>
+
+    </script>
+{% endblock jquery %}

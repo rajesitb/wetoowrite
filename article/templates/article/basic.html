@@ -1,0 +1,181 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{%load crispy_forms_tags%}
+{% block content %}
+
+
+
+    {% block article %}
+    {% endblock article %}
+
+<div class="container" id="bottom-part">
+<div class="row">
+            <div class=" d-inline">
+<!--                    view counter form tracker-->
+            <p class="d-inline">This Post got  <strong class="badge purple badge-pill">{{total_views}}</strong> View{{total_views|pluralize}}</p>
+<!--                    like and follow icons-->
+                {%if article.author.id == request.user.id%}
+                    <br>
+                    <p class="d-inline"> Likes: <span class="badge teal badge-pill mr-2">{{article.users_like.count}}</span>
+                        Followers: <span class="badge blue badge-pill">{{article.author.followers.count}}</span></p>
+                {%else%}<br>
+                <div class="d-inline ">
+                    <span class="count " >
+                    {% with total_likes=article.users_like.count users_like=article.users_like.all %}
+                     <span class="total d-inline"><strong class="badge teal badge-pill">{{total_likes}}</strong> </span>
+                    <a style="text-decoration:none" href="#" data-id="{{article.id}}" data-action="{% if request.user in users_like %}un{% endif %}like" class="like ">
+                        {%if request.user not in article.users_like.all%}<img style="color:white" src="{% static 'img/outline.png' %}" alt="">{%else%}<img src="{% static 'img/filled.png' %}" alt="">{%endif%}
+                    </a>{%endwith%}</span>
+                    </div>
+                <div class="d-inline ml-4">
+                    <span class="follow-count " >
+                    {% with total_followers=article.author.followers.count all_followers=article.author.followers.all %}
+                    <span class="total-follow d-inline"><strong class="badge blue badge-pill">{{total_followers}}</strong></span>
+                        <a style="text-decoration:none" href="#" data-id="{{article.author.id}}" data-action="{% if request.user in all_followers %}un{% endif %}follow" class="follow ">
+                        {%if request.user not in all_followers %}<img src="{% static 'img/add.png' %}" alt="" title="follow author">{%else%}<img src="{% static 'img/remove.png' %}" alt="" title="unfollow author">{%endif%}
+                    </a>{%endwith%}</span>
+
+                </div>
+                {%endif%}
+            </div>
+        </div>
+{#    facebook link#}
+        <div id="fb-root"></div>
+        <script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));</script>
+{#    facebook link end#}
+{#    twitter share button #}
+        <script>window.twttr = (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0],
+        t = window.twttr || {};
+      if (d.getElementById(id)) return t;
+      js = d.createElement(s);
+      js.id = id;
+      js.src = "https://platform.twitter.com/widgets.js";
+      fjs.parentNode.insertBefore(js, fjs);
+
+      t._e = [];
+      t.ready = function(f) {
+        t._e.push(f);
+      };
+
+      return t;
+    }(document, "script", "twitter-wjs"));</script>
+{# twitter share button end#}
+  <div class="container after-al_left" style="background-color:#f0f7f2">
+  {% if user.is_authenticated %}
+            <a type="button" href="{% url 'article-comment-create' article.id article.slug %}" class="btn btn-primary" data-value={{ article.id }} id="comment" style="margin-top:15px;">Add Comment</a>
+{% else %}
+          <h4>Add Comment</h4>
+      <a href="{% url 'login' %}" target="_blank" type="button" class="btn btn-secondary">Login to Comment</a>
+  {% endif %}
+
+    {%with comments.count as total_comments%}
+        <br>
+        <hr>
+    <h4 id="number" style="display:inline">
+        {{total_comments}} </h4>
+    <h4 style="display:inline"> comment{{ total_comments|pluralize }}</h4>
+    {%endwith%}
+    {%for comment in comments%}
+    <div class="container " >
+    <div class="row">
+        <div class="col-lg-9">
+        <p class="box1">
+            Comment By <strong>{{comment.name|title}} </strong>
+            <em>{{comment.created}}</em> {%if comment.created != comment.updated%} Updated on <em>{{comment.updated}}</em>{%endif%}
+        </p>
+        <h6 id="box2" class="{{comment.id}}">
+            {{comment.body|safe}}
+        </h6>
+<!--        being used by jquery-->
+        <h6 class="name_{{comment.id}}" hidden>{{comment.name}}</h6>
+        <h6 hidden class="email_{{comment.id}}">{{comment.email}}</h6>
+
+        {% if comment.name == user.first_name or comment.name == user %}
+
+        <a href="{% url 'comment-update'  comment.id %}" type="button" class="btn btn-secondary" target="_blank">Update</a>
+
+        {% endif %}
+        {% if comment.name == user.first_name or comment.name == user%}
+        <a class="btn btn-danger mt-1 mb-1" href="{%url 'article-comment-delete' comment.id article.id%} ">Delete</a>
+        {% endif %}
+        <!--the reply logic-->
+        {%for replies in comment_replies%}
+        <div id="repliez">
+            {%for reply in replies%}
+            {%if reply.comments_id == comment.id %}
+            <div id="replies">
+                <p class="box3">
+                    Reply by {{reply.name|title}}
+
+                </p>
+                <p class="box4"> {{reply.reply}} </p>
+                {%if reply.name == user.first_name %}
+                <a class="btn btn-danger mt-1 mb-1" href="{%url 'article-reply-delete' reply.id article.id%} ">Delete</a>
+                {%endif%}
+            </div>
+            {%endif%}
+            {%endfor%}
+        </div>
+        {%endfor%}
+
+
+        <div id="reply_div">
+
+            <h4 id="aj_reply_name_{{forloop.counter}}"></h4>
+            <span id="aj_reply_{{forloop.counter}}"></span><br>
+
+            <a class="btn1" id="comment_{{forloop.counter}}"
+               style="font-size:14px;text-decoration:none;background:#b5e6e8;">Post a Reply!</a>
+            <hr>
+            <div style="display: none" id="div_{{forloop.counter}}" >
+            <form action="." class="form1" method="post" id="form_{{forloop.counter}}" enctype="multipart/form-data">
+                {%csrf_token%}
+                {{comment_reply_form|crispy}}
+                <input type="text" hidden name="com_id" id="id_com_id" value="{{comment.id}}">
+                <p><input type="submit" value="Post Reply" id="comment_reply"></p>
+            </form>
+            </div>
+        </div>
+    </div>
+             </div>
+    </div>
+        {%empty%}
+        <p>There are no comments yet!</p>
+        <p id="com_cont">{{forloop.last}}</p>
+        {%endfor%}
+    </div>
+</div>
+
+{% endblock content %}
+{% block jquery %}
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript" src="{% static 'js/article_form_ajax.js' %}"></script>
+<script>
+    $('#comment, #comment_reply').click(function (e) {
+        if ( '{{user.is_authenticated}}' == 'False'){
+            e.preventDefault()
+             $('#comment,#comment_reply ').prop({'disabled': 'true'})
+            alert('Please login to comment')
+        }
+    })
+    $('button.update').click(function () {
+        $('div.update_comment input[type="email"]').prop({'disabled': 'true'})
+         $('div.update_comment input[name="name"]').prop({'disabled': 'true'})
+    })
+
+
+
+
+</script>
+
+    {% block jquery_article %}
+    {% endblock jquery_article %}
+{% endblock jquery %}

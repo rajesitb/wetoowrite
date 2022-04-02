@@ -1,0 +1,420 @@
+{% extends 'blog/base.html' %}
+{% load widget_tweaks %}
+{% load static %}
+{% load blog_tags %}
+{% load crispy_forms_tags %}
+{% load markdown_deux_tags %}
+{% block content %}
+    <title>{{ object.title|title }}</title>
+    <link rel="stylesheet" href="{% static 'css/post_detail.css' %}">
+    <style>
+        p.text-wrap:first-letter {
+            color: white;
+            float: left;
+            font-family: Georgia;
+            font-size: 75px;
+            line-height: 60px;
+            padding-top: 4px;
+            padding-right: 8px;
+            padding-left: 3px;
+        }
+
+        button#back:hover {
+            background-color: #2a1758;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        img#id_image_display {
+            float: left;
+            height: 200px;
+            width: auto;
+            object-fit: contain;
+            margin: 5px;
+        }
+
+        #post img {
+            float: left;
+            height: 200px;
+            width: 250px;
+            margin: 5px;
+
+        }
+
+        section p, li {
+            font-size: large;
+        }
+    </style>
+    <body style="background-color: #490803">
+    <div class="container " style="margin-top: 100px; color: white">
+        <h1>{{ object.title|title }}</h1>
+        <div class="mb-5">
+            {% if object.author.profile.image %}
+                <img class="rounded-circle " height="50" width="50" src="{{ object.author.profile.image.url }}" alt="">
+            {% else %}
+                <img class="rounded-circle " height="50" width="50" src="https://imgur.com/2fQoJNL.jpg" alt="">
+            {% endif %}
+            <p class="d-inline">Author: <a
+                    href="{% url 'user-posts' object.author.id object.author.get_full_name %}"><strong>{{ object.author.get_full_name|title }} </strong>
+            </a> Published: <strong>{{ object.publish|date }}</strong></p>
+
+        </div>
+        <div class="row">
+            {% if object.key_point %}
+                <div class="col-lg-3" style="border: 1px solid white; height: auto;">
+                    <h4 class="text-center"><strong>Key Points</strong></h4>
+                    <section>
+                        {% if summary_list %}
+                            {% for item in summary_list %}
+                                <p>
+                                    {{ item|markdown }}
+                                </p>
+                            {% endfor %}
+                        {% endif %}
+                    </section>
+                </div>
+            {% endif %}
+            <div class="col-lg-9">
+                {% if object.cover %}
+                    <img class="image left img-responsive mr-3" height="300px" src="{{ object.cover.url }}"
+                         alt="" id="id_image_display"/>
+                {% else %}
+                    <img class="image left img-responsive mr-3" height="300px" src="{% static 'images/logo2.PNG' %}"
+                         alt="" id="id_image_display"/>
+                {% endif %}
+                <section class="text-wrap content" id="post" style=" text-align: justify;">
+                    <p class="text-wrap content" id="post"
+                       style=" text-align: justify;">{{ object.content|markdown }}</p>
+                </section>
+                {% if object.author.profile.about_author %}
+                    <div class="mt-1" style="background-color: rgba(57,5,1,0.81); color: white; padding: 5px;">
+                        <h5>About <strong>{{ object.author.get_full_name|title }}</strong></h5>
+                        <h5>{{ object.author.profile.about_author }}</h5>
+                    </div>
+                {% endif %}
+                <div class="a2a_kit a2a_kit_size_32 a2a_default_style">
+                    <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+                    <a class="a2a_button_facebook"></a>
+                    <a class="a2a_button_twitter"></a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="mx-auto">
+                {% if object.author == user %}
+                    <a class="btn btn-secondary mt-1 mb-1" href="{% url 'post-update' object.id %} ">Update</a>
+                    <a class="btn btn-danger mt-1 mb-1" href="{% url 'post-delete' object.id %} ">Delete</a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="row mt-5 ">
+            <p><strong>Similar Posts:</strong></p>
+            {% if post.tags.similar_objects %}
+                {% for article in post.tags.similar_objects %}
+                    <p class="tags mr-5 " style="display:inline;">{{ forloop.counter }}. <a style="color: white;"
+                                                                                            href="{% url 'post-detail'  article.id %}">{{ article.title }}</a>
+                    </p>
+                    <br>
+
+                {% endfor %}
+            {% endif %}
+        </div>
+        {#    comments#}
+        <div class="row">
+            <div class=" d-inline">
+                <!--                    view counter form tracker-->
+                <p class="d-inline">This Post got <strong class="badge purple badge-pill">{{ total_views }}</strong>
+                    View{{ total_views|pluralize }}</p>
+                <!--                    like and follow icons-->
+                {% if post.author.id == request.user.id %}
+                    <br>
+                    <p class="d-inline"> Likes: <span
+                            class="badge teal badge-pill mr-2">{{ post.users_like.count }}</span>
+                        Followers: <span class="badge blue badge-pill">{{ post.author.followers.count }}</span></p>
+                {% else %}<br>
+                    <div class="d-inline ">
+                    <span class="count ">
+                    {% with total_likes=post.users_like.count users_like=post.users_like.all %}
+                        <span class="total d-inline"><strong
+                                class="badge teal badge-pill">{{ total_likes }}</strong> </span>
+                        <a style="text-decoration:none" href="#" data-id="{{ post.id }}"
+                           data-action="{% if request.user in users_like %}un{% endif %}like" class="like ">
+                        {% if request.user not in post.users_like.all %}
+                            <img style="color:white" src="{% static 'img/outline.png' %}" alt="">{% else %}
+                            <img src="{% static 'img/filled.png' %}" alt="">{% endif %}
+                    </a>{% endwith %}</span>
+                    </div>
+                    <div class="d-inline ml-4">
+                    <span class="follow-count ">
+                    {% with total_followers=post.author.followers.count all_followers=post.author.followers.all %}
+                        <span class="total-follow d-inline"><strong
+                                class="badge blue badge-pill">{{ total_followers }}</strong></span>
+                        <a style="text-decoration:none" href="#" data-id="{{ post.author.id }}"
+                           data-action="{% if request.user in all_followers %}un{% endif %}follow" class="follow ">
+                        {% if request.user not in all_followers %}
+                            <img src="{% static 'img/add.png' %}" alt="" title="follow author">{% else %}
+                            <img src="{% static 'img/remove.png' %}" alt="" title="unfollow author">{% endif %}
+                    </a>{% endwith %}</span>
+
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="row d-inline">
+            <p class="d-inline"><strong> Assessment</strong> <i class='far fa-question-circle' style="color: white"
+                                                                data-toggle="tooltip" data-placement="top"
+                                                                title="Polarity is negativity or positivity in sentiment"></i><span
+                    class="ml-3">Polarity: {% if  polarity > 0 %} Positive {% else %} Negative {% endif %}, Subjectivity:
+                {% if  subjectivity > 0 %} Objective {% else %} Subjective {% endif %}</span></p>
+        </div>
+
+        {#    facebook link#}
+        <div id="fb-root"></div>
+        <script>(function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s);
+            js.id = id;
+            js.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));</script>
+        {#    facebook link end#}
+        {#    twitter share button #}
+        <script>window.twttr = (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0],
+                t = window.twttr || {};
+            if (d.getElementById(id)) return t;
+            js = d.createElement(s);
+            js.id = id;
+            js.src = "https://platform.twitter.com/widgets.js";
+            fjs.parentNode.insertBefore(js, fjs);
+
+            t._e = [];
+            t.ready = function (f) {
+                t._e.push(f);
+            };
+
+            return t;
+        }(document, "script", "twitter-wjs"));</script>
+        {# twitter share button end#}
+
+        {#        back button #}
+        <div class="row justify-content-center flex-fill after-al_left">
+            <div class="col-md-7 pt-3">
+                <p class="text-center">
+                    <a href="{% url 'blog-home' %}">
+                        <button class="btn btn-primary btn-block" id="back">Back to the articles list</button>
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+    </body>
+    <div class="container after-al_left" style="background-color: white; ">
+        <h4>Add Comment</h4>
+        <form action="." method="post" id="comment_data" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="md-form form-sm">
+                <i class="fas fa-user prefix "></i>
+                {{ comment_form.name.label_tag }}
+                {{ comment_form.name|add_class:"form-control" }}
+            </div>
+            <div class="md-form form-sm">
+                <i class="fas fa-envelope prefix "></i>
+                {{ comment_form.email.label_tag }}
+                {{ comment_form.email|add_class:"form-control" }}
+            </div>
+            <div class="md-form form-sm">
+                <i class="fas fa-tag prefix "></i>
+                {{ comment_form.body.label_tag }}
+                {{ comment_form.body|add_class:"form-control" }}</div>
+            <div class="md-form form-sm">
+                {{ comment_pics.images.label_tag }}
+                {% render_field comment_pics.images style="padding-top:10px;margin-left:50px" %}
+            </div>
+            <input type="text" hidden name="pk" id="pk" value="{{ object.id }}">
+            <input type="text" hidden name="url" id="url" value="{{ request.get_full_path }}">
+            <br>
+            <button type="submit" class="btn btn-primary" value="Add Comment" id="comment" style="margin-top:15px;">
+                Upload Comment
+            </button>
+        </form>
+        <h4 id="ajax_comment"></h4>
+        <p id="comment_body"></p>
+
+        {% with comments.count as total_comments %}
+            <p id="number" style="display:inline">
+                {{ total_comments }} </p>
+            <p style="display:inline"> comment{{ total_comments|pluralize }}</p>
+        {% endwith %}
+        {% for comment in comments %}
+            <div class="container ">
+                <div class="row mb-5">
+                    <div class="col-lg-9">
+                        <p class="box1">
+                            Comment {{ forloop.counter }} By <strong>{{ comment.name|title }} </strong>
+                            <em>{{ comment.created }}</em> {% if comment.created != comment.updated %} Updated on
+                            <em>{{ comment.updated }}</em>{% endif %}
+                        </p>
+                        <h6 id="box2" class="{{ comment.id }}">
+                            {{ comment.body|linebreaks }}
+                        </h6>
+                        <!--        being used by jquery-->
+                        <h6 class="name_{{ comment.id }}" hidden>{{ comment.name }}</h6>
+                        <h6 hidden class="email_{{ comment.id }}">{{ comment.email }}</h6>
+                        <!--        logic for pics in each comment-->
+                        {% for images in comment.comment_pics.all %}
+
+                            <img {% if images.comment_id == comment.id %} src="{{ images.images.url }}" height="100"
+                                                                          width="150"
+                                                                          style="border:2px solid gray;border-radius:5px;padding:3px"
+                                                                          alt="" {% endif %}>
+
+                        {% endfor %}
+                        <!--        end logic-->
+                        {% if comment.name == user.first_name %}
+                            <button class="btn btn-secondary mt-1 mb-1 reply_edit update" data-toggle="modal"
+                                    data-target="#commentForm_{{ comment.id }}"
+                                    id="{{ comment.id }}">Update
+                            </button>
+                        {% endif %}
+                        <!--        modal form-->
+                        <div class="modal fade" id="commentForm_{{ comment.id }}" tabindex="-1" role="dialog"
+                             aria-labelledby="exampleModalLabel"
+                             aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Edit Comment</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="{% url 'comment-update' comment.id object.id %}" method="post"
+                                              id="form_{{ comment.id }}" enctype="multipart/form-data">
+                                            <div class="form-group update_comment">
+                                                {% csrf_token %}
+                                                {{ comment_form|crispy }}
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                                    Close
+                                                </button>
+                                                <button type="submit" class="btn btn-primary" id="btn_{{ comment.id }}">
+                                                    Update
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!--modal form-->
+                        {% if comment.name == user.first_name or comment.name == user %}
+                            <a class="btn btn-danger mt-1 mb-1" href="{% url 'comment-delete' comment.id object.id %} ">Delete</a>
+                        {% endif %}
+                        <!--the reply logic-->
+                        {% for replies in comment_replies %}
+                            <div id="repliez">
+                                {% for reply in replies %}
+                                    {% if reply.comments_id == comment.id %}
+                                        <div id="replies">
+                                            <p class="box3">
+                                                Reply by {{ reply.name|title }}
+
+                                            </p>
+                                            <p class="box4"> {{ reply.reply }} </p>
+                                            {% if object.author == user or reply.user == user %}
+                                                <a class="btn btn-danger mt-1 mb-1"
+                                                   href="{% url 'reply-delete' reply.id object.id %} ">Delete</a>
+                                            {% endif %}
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+
+
+                        <div id="reply_div">
+                            <!--            <a class="btn1" id="comment_{{forloop.counter}}" style="font-size:14px;text-decoration:none;">Post a Reply!</a>-->
+                            <!--            <button class="btn1" id="comment_{{forloop.counter}}" style="display:block; margin:15px;"-->
+                            <!--                    type="button"><small>Post a Reply!</small>-->
+                            <!--            </button>-->
+
+                            <h4 id="aj_reply_name_{{ forloop.counter }}"></h4>
+                            <span id="aj_reply_{{ forloop.counter }}"></span><br>
+                            <img class="posted_img" id="aj_reply_img_{{ forloop.counter }}"
+                                 src="{% static 'img/posted.jpg' %}" alt="" style="display: none" height="30px"
+                                 width="30px">
+                            <img class="posted_img1" id="aj_reply_img_{{ forloop.counter }}"
+                                 src="{% static 'img/posted.jpg' %}" alt="" style="display: none; " height="50px"
+                                 width="50px"><br>
+
+                            <a class="btn1" id="comment_{{ forloop.counter }}"
+                               style="font-size:14px;text-decoration:none;background:#b5e6e8;">Post a Reply!</a>
+                            <hr>
+                            <div style="display: none" id="div_{{ forloop.counter }}">
+                                <form action="." class="form1" method="post" id="form_{{ forloop.counter }}"
+                                      enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    {{ comment_reply_form|crispy }}
+                                    <input type="text" hidden name="com_id" id="id_com_id" value="{{ comment.id }}">
+                                    <p><input type="submit" value="Post Reply" id="comment_reply"></p>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p>There are no comments yet!</p>
+            <p id="com_cont">{{ forloop.last }}</p>
+        {% endfor %}
+    </div>
+
+{% endblock %}
+{% block jquery %}
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="{% static 'js/form_ajax.js' %}"></script>
+    <script>
+        $('#comment, #comment_reply').click(function (e) {
+            if ('{{user.is_authenticated}}' == 'False') {
+                e.preventDefault()
+                $('#comment,#comment_reply ').prop({'disabled': 'true'})
+                alert('Please login to comment')
+            }
+        })
+        $('button.update').click(function () {
+            $('div.update_comment input[type="email"]').prop({'disabled': 'true'})
+            $('div.update_comment input[name="name"]').prop({'disabled': 'true'})
+        })
+
+
+    </script>
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            let arr ={% autoescape off %} {{ key_words_list }}{% endautoescape %};
+            let phrase = $('p.content').text()
+            let arry = ['Anushka', 'Security ']
+            for (let i = 0, l = arr.length; i < l; i++) {
+                $('p.content').html(function () {
+                    let mod = phrase.replace(arr[i], `<strong> ${arr[i]}</strong>`)
+                    phrase = mod
+                    return mod
+                })
+
+            }
+
+        });
+
+    </script>
+{% endblock jquery %}

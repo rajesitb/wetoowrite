@@ -1,0 +1,27 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+
+    <div class="container white-text" style="background-color: #0d0d0d; margin-top: 200px">
+    <div class="row">
+        <div class="col text-center white-text">
+            <h4>
+                Thank you for visiting We Too Write. <a href="{% url 'login' %}">Log in Again</a>
+                <p>Redirecting to Home Page ...</p>
+            </h4>
+        </div>
+    </div>
+
+    </div>
+
+{% endblock %}
+{% block jquery %}
+    <script>
+    $(document).ready(function () {
+        let delay = 2000;
+        let url = 'https://www.wetoowrite.com';
+        setTimeout(function(){ window.location = url; }, delay);
+
+    })
+
+    </script>
+{% endblock jquery %}

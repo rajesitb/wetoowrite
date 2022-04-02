@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{%load static%}
+{% load widget_tweaks %}
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="author" content="Admin">
+    <meta name="description" content="A truly contemporary Site for writing to share relevant and practical information">
+
+    <title>Register on We Too Write</title>
+    <!-- google fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Aclonica|Autour+One|Black+Ops+One|Cardo|Chango|Cinzel|Della+Respira|Elsie+Swash+Caps|Emblema+One|Fredoka+One|Goblin+One|IM+Fell+French+Canon+SC|Inika|KoHo|MedievalSharp|Monoton|Montserrat+Subrayada|Paytone+One|Permanent+Marker|Righteous|Ultra|Yeseva+One&display=swap"
+          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+    <!-- Bootstrap core CSS -->
+    <link href="{%static 'css/bootstrap.min.css'%}" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="{%static 'css/mdb.min.css'%}" rel="stylesheet">
+    <!-- Your custom styles (optional) -->
+    <link href="{%static 'css/style.min.css'%}" rel="stylesheet">
+    <link rel="icon"
+      type="image/png"
+      href="{%static 'images/logo2.PNG'%}">
+
+    <!--  <link href="css/style.min.css" rel="stylesheet">-->
+    <style type="text/css">
+    html,
+    body,
+    header,
+    .view {
+      height: 100%;
+    }
+
+    @media (max-width: 740px) {
+      html,
+      body,
+      header,
+      .view {
+        height: 1000px;
+      }
+    }
+
+    @media (min-width: 800px) and (max-width: 850px) {
+      html,
+      body,
+      header,
+      .view {
+        height: 650px;
+      }
+    }
+    @media (min-width: 800px) and (max-width: 850px) {
+              .navbar:not(.top-nav-collapse) {
+                  background: #1C2331!important;
+              }
+          }
+
+
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar">
+        <div class="container">
+
+            <!-- Brand -->
+            <a class="navbar-brand waves-effect" href="" target="_blank">
+                <strong class="blue-text"><img class="d-inline" src="{%static 'images/logo2.PNG'%}" height="30px" width="30px"
+                         style="padding-bottom:2px; border-radius:50%; border:1px solid red"> We Too Write</strong>
+                <p style="font-family: 'Dancing Script', cursive; font-size:15px;" class="ml-2">Lets write freely</p>
+            </a>
+            <ul class="navbar-nav ">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'blog-about' %}" target="_blank">About</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+<!-- Full Page Intro -->
+<div class="view full-page-intro " style="background-image: url('https://media.gettyimages.com/photos/quill-pen-leaving-a-colorful-trace-over-pink-background-picture-id1147344219?s=2048x2048');
+   background-repeat: no-repeat;
+    background-size: cover; height:900px;">
+
+    <!-- Mask & flexbox options-->
+    <div class="mask rgba-black-light d-flex justify-content-center align-items-center" >
+
+        <!-- Content -->
+        <div class="container mt-5" >
+
+            <!--Grid row-->
+            <div class="row wow fadeIn mt-5" style="margin-bottom:50px ">
+
+                <!--Grid column-->
+                <div class="col-lg-7 white-text text-center text-md-left " style="margin-top:100px">
+
+                    <img class="d-inline" src="{%static 'images/logo2.PNG'%}" height="70px" width="50px"
+                         style="padding-bottom:20px">
+                    <h1 class="display-4 font-weight-bold d-inline mt-2" style="font-family:cursive;">We Too Write<sup
+                            style="font-family:Montserrat; font-size:30px;">&#174;</sup></h1>
+                    <p style="font-family: 'Dancing Script', cursive; font-size:30px;" >Let's write freely</p>
+
+                    <hr class="hr-light">
+
+                </div>
+                <!--Grid column-->
+
+                <!--Grid column-->
+                <div class="col-lg-5 mb-10" >
+
+                    <!--Card-->
+                    <div class="card ">
+
+                        <!--Card content-->
+                        <div class="card-body">
+                                    <!-- Form -->
+                                    <form method="post" action="" >
+                                        {%csrf_token%}
+                                        <!-- Heading -->
+                                        <h3 class="dark-grey-text text-center">
+                                            <strong>Join to Start Writing</strong>
+                                        </h3>
+                                        <hr>
+
+                                        <div class="md-form form-sm">
+                                            <i id="first" class="fas fa-user prefix "></i>
+                                            <label for="id_username" id="label_first" class="active">Username:</label>
+                                            {{form.username|add_class:"form-control"|add_class:"name"|attr:"font-size:20px"|attr:"autocapitalize:off"|attr:"autofocus:true"}}
+                                            {% for error in form.username.errors %}
+                                            <div class="row">
+                                                <div class="alert alert-danger">{{error}}</div>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                        <div class="md-form">
+                                            <i class="fas fa-user prefix"></i>
+                                            {{form.first_name.label_tag}}
+                                            {{form.first_name|add_class:"form-control"|attr:"pattern:^[A-Za-z]+$"|attr:"title:Only alphabets"}}
+                                        </div>
+                                        <div class="md-form">
+                                            <i class="fas fa-user prefix"></i>
+                                            {{form.last_name.label_tag}}
+                                            {{form.last_name|add_class:"form-control"|attr:"pattern:^[A-Za-z]+$"|attr:"title:Only alphabets"|attr:"required:true"}}
+                                        </div>
+
+                                        <div class="md-form">
+                                            <i class="fas fa-envelope prefix "></i>
+                                            {{form.email.label_tag}}
+                                            {{form.email|add_class:"form-control"|attr:"autocapitalize:off"}}
+                                            {{form.email.help_text }}
+                                            {% for error in form.email.errors %}
+                                            <div class="row">
+                                                <div class="alert alert-danger">{{error}}</div>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                        <div class="md-form mb-2">
+                                            <i class="fas fa-lock prefix "></i>
+                                            {{form.password1.label_tag}}
+                                            {{form.password1|add_class:"form-control"}}
+                                        </div>
+                                        <div class="md-form mb-2">
+                                            <i class="fas fa-lock prefix "></i>
+                                            {{form.password2.label_tag}}
+                                            {{form.password2|add_class:"form-control"}}
+                                            {% for error in form.password2.errors %}
+                                            <div class="row">
+                                                <div class="alert alert-danger">{{error}}</div>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+
+                                        <div class="text-center">
+                                            <button class="btn btn-indigo">Register</button>
+                                            <div class="hint-text small ">Already have an account? <a href="{% url 'login' %}"
+                                                                        class="text-success mt-5">Login Now!</a></div>
+                                            <div class="hint-text small ">By Registering you agree to our<a href="{% url 'blog-tnc' %}"
+                                                                        class="text-success mt-5">T&C</a></div>
+                                            <hr>
+
+                                        </div>
+
+                                    </form>
+                                    <!-- Form -->
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <!--/.Card-->
+
+
+                </div>
+                <!--Grid column-->
+
+            </div>
+            <!--Grid row-->
+
+        </div>
+        <!-- Content -->
+
+    </div>
+    <!-- Mask & flexbox options-->
+
+
+</div>
+<!-- Full Page Intro -->
+
+<!--Footer-->
+<footer class="page-footer font-small brown darken-2 pt-4">
+    <!-- Copyright -->
+    <div class="footer-copyright text-center py-3">© 2020 Copyright:
+        <a href="https://www.wetoowrite.com/"> WeTooWrite.Com</a>
+        <span class="mr-3" style="margin-left: 10px">Connect On</span>
+        <!-- Facebook -->
+        <a class="fb-ic" href="https://www.facebook.com/wetoowrite/" target="_blank">
+            <i class="fab fa-facebook-f  white-text mr-md-5 mr-3 "> </i>
+        </a>
+        <!-- Twitter -->
+        <a class="tw-ic" href="https://twitter.com/wetoowrite" target="_blank">
+            <i class="fab fa-twitter  white-text mr-md-5 mr-3 "> </i>
+        </a>
+    </div>
+    <!-- Copyright -->
+</footer>
+<!--/.Footer-->
+
+<!-- SCRIPTS -->
+<!-- JQuery -->
+<script type="text/javascript" src="{%static 'js/jquery.min.js'%}"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" src="{%static 'js/popper.min.js'%}"></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" src="{%static 'js/bootstrap.min.js'%}"></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" src="{%static 'js/mdb.min.js'%}"></script>
+<script type="text/javascript" src="{%static 'js/register.js'%}"></script>
+<!-- Initializations -->
+<script type="text/javascript">
+
+$(function(){
+
+$('#id_username').attr('autofocus',true).click()
+$('#label_first').addClass('active')
+$('i#first').addClass('active')
+})
+</script>
+</body>
+</html>

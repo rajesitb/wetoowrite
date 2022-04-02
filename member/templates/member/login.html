@@ -1,0 +1,162 @@
+<html>
+{%load static%}
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Admin">
+
+    <meta name="description" content="A truly contemporary Blog Site with relevant and verified blog">
+
+    <title>Sign in to We Too Write</title>
+    <link rel="icon" type="image/png" href="{%static 'images/logo2.PNG'%}">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <style type="text/css">
+	.login-form {
+		width: 340px;
+    	margin: 30px auto;
+	}
+    .login-form form {
+    	margin-bottom: 15px;
+        background: #f7f7f7;
+        box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+        padding: 30px;
+    }
+    .login-form h2 {
+        margin: 0 0 15px;
+    }
+    .login-form .hint-text {
+		color: #777;
+		padding-bottom: 15px;
+		text-align: center;
+    }
+    .form-control, .btn {
+        min-height: 38px;
+        border-radius: 2px;
+    }
+    .login-btn {
+        font-size: 15px;
+        font-weight: bold;
+    }
+    .or-seperator {
+        margin: 20px 0 10px;
+        text-align: center;
+        border-top: 1px solid #ccc;
+    }
+    .or-seperator i {
+        padding: 0 10px;
+        background: #f7f7f7;
+        position: relative;
+        top: -11px;
+        z-index: 1;
+    }
+    .social-btn .btn {
+        margin: 10px 0;
+        font-size: 15px;
+        text-align: left;
+        line-height: 24px;
+    }
+	.social-btn .btn i {
+		float: left;
+		margin: 4px 15px  0 5px;
+        min-width: 15px;
+	}
+	.input-group-addon .fa{
+		font-size: 18px;
+	}
+a {
+
+}
+
+    </style>
+
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar">
+        <div class="container">
+
+            <!-- Brand -->
+            <a class="navbar-brand waves-effect" href="" target="_blank">
+                <strong class="blue-text"><img class="d-inline" src="{%static 'images/logo2.PNG'%}" height="30px" width="30px"
+                         style="padding-bottom:2px; border-radius:50%; border:1px solid red"> We Too Write</strong>
+                <p style="font-family: 'Dancing Script', cursive; font-size:15px;" class="ml-2">Lets write freely</p>
+            </a>
+            <ul class="navbar-nav" style="list-style-type: none; margin-top: 13px; ">
+                <li class="nav-item float-right mt-5" >
+                    <a class="nav-link" style="margin-left: auto" href="{% url 'blog-about' %}" target="_blank">About</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+{% if messages %}
+<div class="messages">
+    {% for message in messages %}
+    <p {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</p>
+    {% endfor %}
+</div>
+{% endif %}
+<div class="view full-page-intro " style="background-image: url('https://media.gettyimages.com/photos/feminine-workspace-with-laptop-picture-id1154030924?s=2048x2048');
+   background-repeat: no-repeat;
+    background-size: cover; height:800px;">
+
+    <div class="container mt-5">
+        <div class="login-form">
+            <!-- Non-field errors -->
+            {% if form.non_field_errors %}
+            <div class="row">
+                {% for error in form.non_field_errors %}
+                <div class="alert alert-danger">{{error}}</div>
+                {% endfor %}
+            </div>
+            {%endif%}
+            <form action=" " method="post">
+
+                {%csrf_token%}
+                <h2 class="text-center d-inline"><img class="d-inline" src="{%static 'images/logo2.PNG'%}" height="30px" width="30px"
+                         style="padding-bottom:2px; border-radius:50%; border:1px solid red"> Sign in</h2>
+                <div class="text-center social-btn">
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-user"></i></span>
+
+                        <input type="text" class="form-control" name="username" autofocus="" placeholder="Username" autocapitalize="none" autocomplete="username" maxlength="150" required="" id="id_username">
+                        <p id="error_id_username" class="invalid-feedback" style="font-weight:bold"></p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                        <input type="password" name="password" class="form-control" placeholder="Password" autocomplete="current-password" required="" id="id_password">
+                        <p id="error_id_password" class="invalid-feedback" style="font-weight:bold"></p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success btn-block login-btn">Log in to Write</button>
+                    <input type="hidden" name="next" value="{{ next }}">
+                </div>
+                <div class="clearfix">
+                    <label class="pull-left checkbox-inline"><input type="checkbox" autocomplete="on"> Remember
+                        me</label>
+                    <a href="{% url 'password_reset' %}" class="pull-right text-success">Forgot Password?</a>
+                </div>
+                <div class="hint-text small ">Don't have an account? <a href="{% url 'register' %}"
+                                                                        class="text-success">Register Now!</a></div>
+                <div><p>Visit our <a href="{% url 'blog-about' %}">About Page</a></p> </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

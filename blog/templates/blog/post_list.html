@@ -1,0 +1,149 @@
+{% extends 'blog/base.html' %}
+{% load markdown_deux_tags %}
+{% block content %}
+    {% load static %}
+    <style>
+        div.remove > section > p > img {
+            display: none;
+        }
+
+        div.remove > section > p > a > img {
+            display: none;
+        }
+
+        div.remove > section > p {
+            text-align: justify;
+        }
+
+        div.cover img {
+            opacity: 0.75;
+            width: 100%;
+            height: 55vh;
+            object-fit: cover;
+        }
+
+        @media only screen and (max-width: 300px) {
+            div.view img {
+                opacity: 0.75;
+                width: 100%;
+                height: 30vh;
+                object-fit: cover;
+            }
+        }
+
+        div.cover img:hover {
+            opacity: 1.0;
+            transform: scale(1.5)
+        }
+
+        div.view {
+            background-image: url({% static 'img/wetoobg.webp' %});
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Rye&family=Vast+Shadow&display=swap" rel="stylesheet">
+    <div class="view">
+        <div class="white-text text-center mb-5" style="background-color: #0b2e13; min-height: 15vh; margin-top: 100px;">
+            <h1 style="font-family: 'Rye', cursive; font-size: 40px; letter-spacing: 4px;">We Too Write</h1>
+            <h4 style="font-family: 'Vast Shadow', cursive;">Write For and From the Book of Life</h4>
+
+        </div>
+        <div class="container">
+            <header>
+                <form class="form-inline md-form ml-auto mb-4" action="{% url 'blog-search' %}">
+                    <input class="form-control mr-sm-2" type="search" name="q" id="id_q" placeholder="Search"
+                           aria-label="Search">
+                    <button class="btn aqua-gradient btn-rounded btn-sm my-0" type="submit">Search</button>
+                </form>
+            </header>
+        </div>
+        <div class="container">
+            {% if messages %}
+                <ul class="messages list-unstyled">
+                    {% for message in messages %}
+                        <li class=" white-text " style="border: 1px solid yellow; border-radius: 2px">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            <!-- Grid row -->
+            <div class="row">
+                {% for article in object_list %}
+                    <!-- Grid column -->
+                    <div class="col-lg-6 mb-4 d-flex align-items-stretch">
+                        <!--Card-->
+                        <div class="{% cycle 'card default-color'  'card primary-color' 'card secondary-color' 'red lighten-1 ' %}">
+                            {% if article.cover %}
+                                <!--Card image-->
+                                <div class="view cover">
+                                    <img src="{{ article.cover.url }}" class="card-img-top" alt="photo">
+                                </div>
+                            {% else %}
+                                <div class="view">
+                                    <img src="{% static 'images/logo2.PNG' %}" class="card-img-top" alt="photo">
+                                </div>
+                            {% endif %}
+                            <!--Card content-->
+                            <div class="card-body text-center remove">
+                                <!--Title-->
+                                <h4 class="card-title white-text">{{ article.title|title }}</h4>
+                                <p class="" style="color: #ffff00; text-align: center">By <a
+                                        href="{% url 'user-posts' article.author.id article.author.get_full_name %}">{{ article.author.first_name|title }}</a>
+                                    on {{ article.publish|date:"d M" }}</p>
+                                <!--Text-->
+                                <section style="color: white; text-align: justify;">
+                                    <p class="card-text white-text "
+                                       style="text-wrap: normal; text-align: justify; ">{{ article.content|markdown|truncatewords:"100" }}</p>
+                                </section>
+                                <a href="{{ article.get_absolute_url }}"
+                                   class="btn btn-outline-white btn-md waves-effect">Read on</a>
+                            </div>
+                            <div class="card-footer text-muted white-text d-inline">
+                                <p class="float-right d-inline mt-3 mr-2"><img class="d-inline mr-1"
+                                                                               src="{% static 'img/filled.png' %}"
+                                                                               alt="" title="Likes"> <span
+                                        class="badge teal badge-pill">{{ article.users_like.count }} </span></p>
+                                <p class="d-inline mt-0 pt-0"><img class="d-inline" src="{% static 'img/add.png' %}"
+                                                                   alt="" title="Followers of the Author"> <span
+                                        class="badge purple badge-pill">{{ article.author.followers.count }} </span></p>
+                            </div>
+
+                        </div>
+                        <!--/.Card-->
+                    </div>
+                    <!-- Grid column -->
+                {% endfor %}
+
+            </div>
+            <div style="text-align:center;">
+                {% if page_obj.has_other_pages %}
+
+                    {% if page_obj.has_previous %}
+                        <a class="btn btn-outline-info mb-4" href="?page=1">First</a>
+                        <a class="btn btn-outline-info mb-4"
+                           href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                    {% endif %}
+
+                    {% for num in page_obj.paginator.page_range %}
+                        {% if page_obj.number == num %}
+                            <a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+                        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                            <a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                        <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+                        <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+                    {% endif %}
+
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,431 @@
+{% extends 'article/basic.html' %}
+{% load widget_tweaks %}
+{%load crispy_forms_tags%}
+{% block article %}
+    {% load static %}
+    <head>
+        <title>Article</title>
+        <style>
+            blockquote {
+    margin: 0;
+}
+
+blockquote p {
+    padding: 15px;
+    background: #eee;
+    border-radius: 5px;
+}
+        </style>
+    </head>
+    <body>
+    <div class="container" style="margin-top: 100px;">
+        <div class="row">
+            <div style="border: 1px solid grey; padding: 5px;">
+                <h1 class="mx-auto text-center">Pandemic and Social Unrest</h1>
+                <div>
+                    <img src="{% static 'images/india-coronavirus.jpg' %}"
+                         alt="" class="img-fluid text-center ">
+                </div>
+                <div style="padding-left: 10px;">
+                    <section class="text-justify">
+                        <blockquote
+                                cite="https://in.reuters.com/article/imf-worldbank-coronavirus-protests/pandemic-could-trigger-social-unrest-in-some-countries-imf-idINKCN21X1TE">
+                            <p>As the coronavirus sweeps the world, it hits the poor much harder than the better off. One
+                            consequence will be social unrest, even revolutions.</p>
+                        </blockquote><br><br>
+                        <h2>Past Pandemics</h2>
+                        <h4>Those of us grimacing and wincing at the ill fated second decade of 21 Century, still need to be
+                        thankful to their stars that they were not born in 20<sup>th</sup> or earlier centuries.
+                        The world in the 20<sup>th</sup> Century was marauded by seven major types most of of pandemics,
+                            which were bred in Europe and South/South East Asia and cumulatively claimed 55 million deaths
+                             and two world wars causing excess of 100 million deaths.
+                        Additionally, India went through a nightmarish partition in which about 2 million lives were lost and endured three full scale wars thereafter.</h4>
+                        <h4><u>Influenza</u></h4>
+                        <h4>The world has witnessed several onslaughts of pandemics and the 20<sup>th</sup> has had its
+                            fair share.
+                            Europe has been the breeding ground for majority of them with the Spanish Influenza being
+                            the deadliest of all. The
+                            Spanish Flu (H1N1) lasted from 1918 to 1920, affected 500 million or one third of the world
+                            population and killed an at least 50 million worldwide. See the Table 1 for all flu
+                            outbreaks and
+                            Graph 1 on infected vs death cases.
+                            The first cholera pandemic broke out in 1817 near Calcutta. India has had six major out
+                            breaks of Cholera from 1817 to 1973. It did not escape the
+                            Spanish Flu and was also ravaged
+                            by Polio, Chikungunya and Small Pox epidemics.</h4>
+                        <figure>
+
+                            <img src="https://i.imgur.com/jPJ1Mcv.png" alt="" title="Table 1">
+                            <figcaption><a
+                                    href="https://www.sinobiological.com/research/virus/1968-influenza-pandemic-hong-kong-flu">Table
+                                1</a></figcaption>
+                        </figure>
+
+
+                    </section>
+                </div>
+                <figure>
+                    <div id="chartContainer" style="height: 370px; max-width: 920px; margin: 0px auto;"></div>
+                    <figcaption>Graph 1</figcaption>
+                </figure>
+                 <div style="padding-left: 10px;">
+                <h4><u>Severe Respiratory Infections</u></h4>
+                <h4 style="text-align: justify">The past the present Coronavirus Pandemic is quite different from the
+                    past influenza
+                    pandemics. Although the symptoms of COVID-19 and the flu can look similar, the two illnesses are
+                    caused by different viruses. <br>
+                    For instance, Middle East Respiratory Syndrome Coronavirus (MERS-CoV) is transmitted to humans from
+                    camels, and Severe Acute Respiratory Syndrome Coronavirus-1 (SARS-CoV-1) is transmitted to humans
+                    from civet cats. <br>
+                    There are seven known types of human coronaviruses, wherein four types, namely KHU1, OC43, NL63, and
+                    229E, cause mild to moderate respiratory infections, such as the common cold. Two types, however,
+                    cause severe respiratory infections – the severe acute respiratory syndrome coronavirus (SARS-CoV)
+                    and the Middle East Respiratory Syndrome coronavirus (MERS-CoV). The seventh coronavirus type is the
+                    novel coronavirus SARS-CoV-2 that has spread from China to the rest of the world. See Graph 2 below
+                    for infected Vs
+                    death cases.
+                </h4>
+                <figure>
+                    <div id="Container1" style="height: 370px; max-width: 920px; margin: 0px auto;"></div>
+                    <figcaption>Graph 2</figcaption>
+                </figure>
+                     <br>
+                <h2>Pandemics and World Economy</h2>
+                <h4 style="text-align: justify">The enormity of Spanish Flu of 1918 has not been overshadowed yet. <a
+                        href="https://www.stlouisfed.org/~/media/files/pdfs/community-development/research-reports/pandemic_flu_report.pdf">Most
+                    of the evidence</a> indicates
+                    that the economic effects of the 1918 influenza pandemic were short-term. Many businesses,
+                    especially those in the service and entertainment industries, suffered double-digit losses in
+                    revenue. Other businesses that specialized in health care products experienced an increase
+                    in revenues. <br><br>
+                    In the current crisis too, employment has been impacted directly as a result of lockdowns and <a
+                            href="https://www.ilo.org/wcmsp5/groups/public/---dgreports/---dcomm/documents/briefingnote/wcms_740877.pdf">195
+                        million full-time workers</a> (assuming a 48-hour working week) have lost their jobs worldwide.
+                    The sectors most at risk include accommodation and food services, manufacturing, retail, and
+                    business and administrative activities.
+                    In India, with a share of
+                    almost 90 per cent of people working in the informal
+                    economy, about 400 million workers in the informal
+                    economy are at risk of falling deeper into poverty
+                    during the crisis. Current lockdown measures in India,
+                    which are at the high end of the <a
+                            href="https://www.bsg.ox.ac.uk/research/research-projects/coronavirus-government-response-tracker">University
+                        of Oxford’s</a>
+                    COVID-19 Government Response Stringency Index,
+                    have impacted these workers significantly, forcing
+                    many of them to return to rural areas.
+                    <br><br>
+                    Consequently there is a likely hood of a <a
+                            href="https://www.financialexpress.com/opinion/covid-19-may-double-poverty-in-india/1943736/">two
+                        fold increase</a> in BPL figures of India to about 62 Crores,
+                    widening the chasm of inequality.
+                    As per another estimate, over 140 million people could fall into <a
+                            href="https://www.ifpri.org/blog/poverty-and-food-insecurity-could-grow-dramatically-covid-19-spreads">extreme
+                        poverty the world over</a> in 2020 — an increase of 20% from present
+                    levels. This in turn would drive up food insecurity. As per one mathematical model,
+                    following a pandemic, the natural rate of
+                    interest declines for decades thereafter, reaching
+                    its <a href="https://www.frbsf.org/economic-research/files/wp2020-09.pdf">nadir in about 20
+                        years.</a>
+                    This speaks of the disproportionate effects on the labor force
+                    relative to land (and later capital) that pandemics had throughout centuries.
+
+                </h4><br>
+                <h2>Social Unrest</h2>
+                <h4 style="text-align: justify">
+                    <a href="https://in.reuters.com/article/imf-worldbank-coronavirus-protests/pandemic-could-trigger-social-unrest-in-some-countries-imf-idINKCN21X1TE">
+                        Unemployment
+                        has almost doubled to around 14.5%</a> in India and approx <a
+                        href="https://economictimes.indiatimes.com/news/economy/policy/covid-19-could-cost-135-million-jobs-push-120-million-people-into-poverty-in-india-report/articleshow/75785601.cms?from=mdr">13.5
+                    Crore</a> jobs have been lost.
+                    While unlock phase one has started, industry is complaining about <a
+                        href="https://www.financialexpress.com/economy/labour-shortage-haunts-pune-units-due-to-migrants-exodus/1959502/">shortage
+                    of labour</a> due to their exodus. Their early return is unlikely as top <a
+                        href="http://statisticstimes.com/economy/gdp-of-indian-states.php#:~:text=Indian%20states%20by%20GDP&text=As%20of%20year%202016%2D17,%25)%20and%20Gujarat%20(7.69%25).">five
+                    states</a> contributing to GDP also figure in <a
+                        href="https://www.google.com/search?q=state+wise+corona+cases&rlz=1C1CHBF_enIN851IN851&oq=state+wise+corona&aqs=chrome.1.69i57j0l7.20305j0j7&sourceid=chrome&ie=UTF-8">top
+                    five states with max COVID-19 cases</a>, Maharashtra being on the top in both. With nothing more to
+                    lose, this
+                    segment of the population is prone to indulge in creating unrest and riots. Lets examine the past a
+                    bit.</h4><br><h4 style="text-align: justify"></h4>
+                <blockquote>
+
+                    <p>In the past pandemics, <a href="https://en.wikipedia.org/wiki/Cholera_Riots">Cholera riots</a> took
+                    place in Europe and USA in the 19 <sup>th</sup> century
+                    and Plague riots have taken place against authorities enforcing rules and doctors. Both led to
+                    conspiracies and myths of physicians and the state intentionally poisoning wells and food to kill
+                    off the poor.
+                    Rioters in both attacked hospitals, doctors, nurses, and government officials. To quote just one
+                    example, At Massafra in Puglia, Italy, the old <a
+                        href="https://www.historytoday.com/archive/feature/plague-and-prejudice">cholera myths</a> of
+                    hospitals as death chambers
+                    for the poor persisted. Crowds of around 3,000 stormed the cholera hospital and ‘liberated’ the
+                    patients, whom they paraded triumphantly through the streets. Prominent government officials and
+                    doctors were killed, nurses were thrown out of windows, equipment was smashed and the hospital set
+                    ablaze.
+                    In India, clashes of cultures occurred between colonial soldiers and worshippers in poor
+                    districts of Calcutta or Bombay as well. The main causes for riots world over can be seen as
+                    <ul>
+                        <li>
+                            Rumors - mostly related to deliberate killing of the already infected.
+                        </li>
+                        <li>
+                            Denial of medical care to the under privileged, extortion for medical treatment and disposal
+                            of the dead.
+                        </li>
+                        <li>
+                            Selective <a href="https://www.historytoday.com/archive/feature/plague-and-prejudice">enforcement
+                            of law</a>, differentiating between communities and classes.
+                        </li>
+                    </ul></p>
+                </blockquote>
+                <h4>
+                    However the mother of all, Spanish Flu of 1918-19, <a
+                        href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4422154/">provoked no major riots</a> or
+                    religious and sectarian hatred and has confounded many historians.
+
+                </h4><br>
+                <h2>Will the History of Riots and Unrest Repeat?
+                </h2>
+                <h4 style="text-align: justify">The most misleading cliche about a pandemic is that it treats us all the same. It
+                    doesn't, neither medically nor economically, socially or psychologically. It rather
+                    exacerbates preexisting conditions of inequality. Be it the slum dwellers of Bombay in
+                    1817 or those living in Dharavi today, the poor and the economically disadvantaged are the
+                    hardest hit because for them there’s no such thing as “social distancing,” since the whole
+                    family sleeps in one room. There’s no discussion about whether to wear masks because there aren’t
+                    any.
+                    More hand-washing is good advice, but not for them there’s no running water.</h4><h4 style="text-align: justify"> <br>
+
+                    Epidemics are, by their very nature, divisive. The neighbor you might, in better times, turn to for
+                    help becomes a possible source of infection. The rituals of daily life become opportunities for
+                    transmission; the authorities enforcing quarantine become agents of oppression.
+                    It would be naive to think that, once this medical emergency is over, either individual countries or
+                    the world can carry on as before. Anger and bitterness will find new outlets. Early harbingers
+                    include millions of Brazilians banging pots and pans from their windows to protest against their
+                    government, or Lebanese prisoners rioting in their overcrowded jails. As per one record, <b>seven</b> out of
+                    16 <a href="https://carnegieendowment.org/publications/interactive/protest-tracker">protests worldwide</a> are related to Coronavirus.
+                     The great pandemic of 2020 is therefore an ultimatum to those of us who reject populism. <br><br>
+
+                    The early indicators are already there in India too with scores of videos of discrimination and improper
+                    medical
+                    treatment being uploaded on social media. Doctors who were extolled as heroes are now coming in
+                    for
+                    criticism for discriminating and profiteering. If this behaviour persists, like earlier, they will
+                    bear the brunt of riots, if any. Still fresh in
+                    our
+                    memory is the chopping of hand of a police official who was enforcing lockdown in one state.
+                    Like the Virus, the contagion of riots also spreads and infects others to incite them into rioting.
+                    People in riots act according to their assumed social identities and do not behave mindlessly,
+                    people construct group boundaries (we are more influenced by fellow in-group members than out-group
+                    members) and the extent to which actions are in line with prevailing <a
+                            href="http://www.sussex.ac.uk/beyondcontagion/">group norms</a>. Hence <i>to prevent</i> the riot
+                engine from starting, we should remain mindful of not targeting and oppressing any group of people in
+                particular
+                </h4><br>
+                <h2>The Panacea?</h2>
+                <h4 style="text-align: justify">The word “quarantine” comes from the Italian word “quaranta”, meaning “forty”. The earliest formal
+                    quarantines were a response to contain the Black Death in Europe between 1347 and 1351.
+                    Whenever disaster strikes, like right about now, it’s tempting to look to the past for guidance on
+                    what to do or, alternatively, what not to do. Like “quarantine” to contain spread of disease,
+                    history has enough lessons for Govts in power to stymie the unrest hydra well before passions mount
+                    and
+                    threshold of rioting is crossed. The Govt in India has done well so far in addressing the
+                    transportation issue of
+                    migrant labours, moratorium on loan repayment, Vande Bharat Mission to conduct repatriation flights
+                    for 14,800 Indian citizens stranded abroad, digitisation with Arogya Setu and Rs 34,800 crore
+                    through DBT to 39 Crore living BPL. <br><br> As of
+                    now there are no seething issues
+                    which can snowball into a rallying call for protests and riots but complacency should not set in and
+                    Govt should remain
+                    watchful of emerging problems.
+                    Just as there are many ways for microbes to infect a body, there are many ways for epidemics to play
+                    out in the body politic. Political masters may find many opportunities coming by to grind their own
+                    political axe. Public at large must be wise to discern and not be misled.
+                </h4>
+                 </div>
+            </div>
+        </div>
+
+            <div class="row mb-5 mt-5">
+            <div class="">
+                <div class="fb-share-button " data-href="https://www.wetoowrite.com{{ object.get_absolute_url }}{{ object.slug }}/"
+                data-layout="button_count"> </div>
+            </div>
+            <hr>
+            <div class="">
+              <a class="twitter-share-button"
+                        href="https://twitter.com/intent/tweet?text={{ object.title }} by {{ object.author.first_name }}&url=https://www.wetoowrite.com{{ object.get_absolute_url }}{{ object.slug }}/"
+                        >Tweet</a>
+            </div>
+        </div>
+{#    facebook link#}
+        <div id="fb-root"></div>
+        <script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));</script>
+{#    facebook link end#}
+{#    twitter share button #}
+        <script>window.twttr = (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0],
+        t = window.twttr || {};
+      if (d.getElementById(id)) return t;
+      js = d.createElement(s);
+      js.id = id;
+      js.src = "https://platform.twitter.com/widgets.js";
+      fjs.parentNode.insertBefore(js, fjs);
+
+      t._e = [];
+      t.ready = function(f) {
+        t._e.push(f);
+      };
+
+      return t;
+    }(document, "script", "twitter-wjs"));</script>
+{# twitter share button end#}
+      </div>
+
+    </body>
+
+
+{% endblock article %}
+{% block jquery_article %}
+
+    <script>
+        window.onload = function () {
+
+            var chart = new CanvasJS.Chart("chartContainer", {
+                animationEnabled: true,
+                title: {
+                    text: "Flu: Infected vs Deaths"
+                },
+                axisY: {
+                    title: "Affected (Millions)",
+                    titleFontColor: "#4F81BC",
+                    lineColor: "#4F81BC",
+                    labelFontColor: "#4F81BC",
+                    tickColor: "#4F81BC"
+                },
+                axisY2: {
+                    title: "Died (Millions)",
+                    titleFontColor: "#C0504E",
+                    lineColor: "#C0504E",
+                    labelFontColor: "#C0504E",
+                    tickColor: "#C0504E"
+                },
+                toolTip: {
+                    shared: true
+                },
+                legend: {
+                    cursor: "pointer",
+                    itemclick: toggleDataSeries
+                },
+                data: [{
+                    type: "column",
+                    name: "Cases Infected (mn)",
+                    legendText: "Infected Cases",
+                    showInLegend: true,
+                    dataPoints: [
+                        {label: "Spanish Flu", y: 500},
+                        {label: "Asian Flu", y: 500},
+                        {label: "Hong Kong Flu", y: 300},
+                        {label: "Swine Flu", y: 60}
+
+                    ]
+                },
+                    {
+                        type: "column",
+                        name: "Death Cases (mn)",
+                        legendText: "Death",
+                        axisYType: "secondary",
+                        showInLegend: true,
+                        dataPoints: [
+                            {label: "Spanish Flu", y: 50},
+                            {label: "Asian Flu", y: 1.1},
+                            {label: "Hong Kong Flu", y: 1.1},
+                            {label: "Swine Flu", y: 0.575}
+                        ]
+                    }]
+            });
+            chart.render();
+
+            function toggleDataSeries(e) {
+                if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                    e.dataSeries.visible = false;
+                } else {
+                    e.dataSeries.visible = true;
+                }
+                chart.render();
+            }
+
+
+            var chart1 = new CanvasJS.Chart("Container1", {
+                animationEnabled: true,
+                title: {
+                    text: "Respiratory Syndrome: Infected vs Deaths"
+                },
+                axisY: {
+                    title: "Affected/Died (Mil)",
+                    titleFontColor: "#4F81BC",
+                    lineColor: "#4F81BC",
+                    labelFontColor: "#4F81BC",
+                    tickColor: "#4F81BC"
+                },
+                axisY2: {
+                    title: "Died (Thousands)",
+                    titleFontColor: "#C0504E",
+                    lineColor: "#C0504E",
+                    labelFontColor: "#C0504E",
+                    tickColor: "#C0504E"
+                },
+                toolTip: {
+                    shared: true
+                },
+                legend: {
+                    cursor: "pointer",
+                    itemclick: toggleDataSeries
+                },
+                data: [{
+                    type: "column",
+                    name: "Infected Cases (Th) ",
+                    legendText: "Infected Cases",
+                    showInLegend: true,
+                    dataPoints: [
+                        {label: "SARS", y: 8},
+                        {label: "MERS", y: 2.519},
+                        {label: "COVID - 19", y: 6931},
+
+                    ]
+                },
+                    {
+                        type: "column",
+                        name: "Death Cases (Th)",
+                        legendText: "Death",
+                        axisYType: "secondary",
+                        showInLegend: true,
+                        dataPoints: [
+                            {label: "SARS", y: 0.8},
+                            {label: "MERS", y: 0.7},
+                            {label: "COVID - 19", y: 400},
+                        ]
+                    }]
+            });
+            chart1.render();
+
+            function toggleDataSeries(e) {
+                if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                    e.dataSeries.visible = false;
+                } else {
+                    e.dataSeries.visible = true;
+                }
+                chart.render();
+            }
+
+        }
+    </script>
+    <script src="{% static 'js/canvasjs.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/form_ajax.js' %}"></script>
+{% endblock jquery_article %}

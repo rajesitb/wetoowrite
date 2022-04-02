@@ -1,0 +1,20 @@
+{% extends 'blog/base.html'%}
+{% load crispy_forms_tags %}
+{%load static%}
+
+<title>Confirm</title>
+{% block content %}
+{% if messages %}
+<div class="messages container" style="margin-top: 200px;" >
+    {% for message in messages %}
+    <h4 class="alert alert-primary">{{ message }}</h4>
+    {% endfor %}
+    <h4>By clicking on the confirmation link you agree to our <a href="{% url 'blog-tnc' %}"> <strong>Terms and Conditions </strong></a>of posting in this website</h4>
+</div>
+{% endif %}
+{%endblock%}
+{% block jquery %}
+    <script>
+    $('a.login').hide()
+    </script>
+{% endblock jquery %}

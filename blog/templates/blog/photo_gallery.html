@@ -1,0 +1,189 @@
+{% load static %}
+<html lang="en">
+<head>
+    <title>Photo Gallery</title>
+    <link rel="stylesheet" href='{% static "css/p_gallery/lightgallery.css" %}'>
+    <link rel="stylesheet" href='{% static "css/p_gallery/style1_2.css" %}'>
+    <link rel="stylesheet" href='{% static "css/lg-theme-default.scss" %}'>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Fredoka+One&display=swap">
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/mdb.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'images/logo2.PNG' %}">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <style>
+        @media screen and (min-width: 320px) and (max-width: 767px) and (orientation: portrait) {
+            html {
+                transform: rotate(-90deg);
+                transform-origin: left top;
+                width: 100vh;
+                height: 100vw;
+                overflow-x: hidden;
+                position: absolute;
+                top: 100%;
+                left: 0;
+            }
+        }
+
+        .loading {
+            background: transparent url({% static 'img/spinner.gif' %}) center no-repeat;
+        }
+
+        img {
+            border: 2px solid white;
+            margin-bottom: 5px;
+        }
+
+        .img-responsive {
+            max-width: 30vw;
+        }
+    </style>
+</head>
+
+<body class="home bg-dark">
+{% if story %}
+    <div class="container " style="margin-top: 50px;">
+        <div class="row">
+            <div class="jumbotron mx-auto">
+                <h2 class="display-4">{{ story.story_title }}</h2>
+                <p class="lead">{{ story.story_content }}</p>
+            </div>
+        </div>
+        <hr class="hr-light">
+    </div>
+
+{% endif %}
+<div class="demo-gallery container ">
+    <h4 class="white-text text-center"> Image Thumbnails </h4>
+    <p class="white-text text-center">Click on an image to view in Galley or Share</p>
+    {#    <ul id="" class="list-unstyled row pics" style="list-style-type: none; margin-top: 10px;">#}
+    {#    {% if photos %}#}
+    {##}
+    {#        {% for photo in photos %} {% if photo.file %}#}
+    {##}
+    {##}
+    {#            <li class=" col-md-5 mb-5 " style="font-family: 'Fredoka One', cursive; margin-top:50px "#}
+    {#                data-twitter-share-url="{{ photo.file.url }}"#}
+    {#                data-facebook-share-url="{{ photo.file.url }}"#}
+    {#                data-tweet-text="{{ photo.title_of_the_picture }}"#}
+    {#                data-facebook-text="{{ photo.title_of_the_picture }}"#}
+    {#                data-src="{{ photo.file.url }}" data-sub-html="#}
+    {#            <h2>{{ photo.title_of_the_picture }}</h2><h4>{{ photo.describe_the_picture }} </h4>">#}
+    {#                <a href="{{ photo.file.url }}" >#}
+    {#                    <img class="img-responsive lazyload loading" src="{{ photo.file.url }}" alt="{{ photo.title_of_the_picture }}" loading="lazy">#}
+    {#                </a>#}
+    {#                <h4 class="green-text">{{ photo.title_of_the_picture }}</h4>#}
+    {#                <p class="white-text " style="height: auto">{{ photo.describe_the_picture }}#}
+    {#                </p>#}
+    {#            </li>#}
+    {#        {% endif %}#}
+    {#        {% endfor %}#}
+    {#    {% endif %}#}
+    {#    </ul>#}
+    <div class="row pics" id="lightgallery">
+        {% for photo in photos %}
+                <div class="col-md-6" data-src="{{ photo.file.url }}" data-sub-html="
+            <h2>{{ photo.title_of_the_picture }}</h2><h4>{{ photo.describe_the_picture }}">
+                    <a href="{{ photo.file.url }}">
+                        <img class="img-responsive lazyload loading" src="{{ photo.file.url }}"
+                             alt="{{ photo.title_of_the_picture }}" loading="lazy">
+                    </a>
+                    <h4 class="green-text">{{ photo.title_of_the_picture }}</h4>
+                    <p class="white-text " style="height: auto">{{ photo.describe_the_picture }}
+                </div>
+
+        {% endfor %}
+    </div>
+    <br><br>
+    <div><br>
+        {% if videos %}
+            <hr class="hr-light " style="margin-top: 50px;">
+            <h4 class="white-text text-center"> Video Thumbnails </h4>
+            <div class="row">
+                {% for video in videos %}
+                    <div class="d-inline mr-3 mt-2" style="font-family: 'Fredoka One', cursive; ">
+
+                        <video width="320" height="240" controls style="border: 2px solid white; padding: 2px;">
+                            <source src="{{ video.file.url }}" type="video/mp4">
+                            <source src="{{ video.file.url }}" type="video/webm">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="a2a_kit a2a_kit_size_32 a2a_default_style mt-2 mb-2"
+                             data-a2a-url="{{ video.file.url }}" data-a2a-title="{{ video.title_of_the_picture }}"
+                             style="border: none">
+                            <a class="a2a_dd mr-2" href="https://www.addtoany.com/share"></a>
+                            <a class="a2a_button_facebook mr-2"></a>
+                            <a class="a2a_button_twitter mr-2"></a>
+                        </div>
+                        <h4 class="green-text">{{ video.title_of_the_picture }}</h4>
+                        <p class="white-text">{{ video.describe_the_picture }} </p>
+
+                    </div>
+                {% endfor %}
+            </div>
+
+        {% endif %}
+    </div>
+    <br>
+    <hr class="hr-light mt-5">
+    <a href="{% url 'picture-story-list' %}" class="btn btn-deep-orange">Back to Picture Story List</a>
+    {% if story.user == user %}
+        <a href="{% url 'upload-images' story.id %}" class="btn btn-outline-lime ">Upload More Images / Videos </a>
+        <a href="{% url 'upload-images' story.id %}" class="btn btn-outline-indigo white-text ">Edit Images /
+            Videos </a>
+        <button data-toggle="modal" data-target="#exampleModal" class="btn btn-danger ">Delete Story</button>
+
+    {% endif %}
+</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete {{ story.story_title }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete!</p>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-danger" href="{% url 'delete-picture-story' story.id %}">Delete Story</a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#lightgallery").lightGallery();
+    });
+    $('.img-responsive').each(function () {
+        let img = $(this);
+        img.on('load', function () {
+            img.css({background: 'none'})
+        })
+    })
+</script>
+<script src="{% static 'js/p_gallery/jquery.mousewheel.min.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.min.js"></script>
+<script src="https://cdn.jsdelivr.net/picturefill/2.3.1/picturefill.min.js"></script>
+<script src="{% static 'js/p_gallery/lightgallery-all.min.js' %}"></script>
+<script src="{% static 'js/p_gallery/modules/lg-thumbnail.min.js' %}"></script>
+<script src="{% static 'js/p_gallery/modules/lg-fullscreen.min.js' %}"></script>
+
+
+<script src="{% static 'js/p_gallery/jquery.mousewheel.min.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.min.js"></script>
+
+
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/mdb.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script async src="https://static.addtoany.com/menu/page.js"></script>
+
+
+</body>
+</html>

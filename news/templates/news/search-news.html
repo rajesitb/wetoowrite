@@ -1,0 +1,117 @@
+{%extends 'blog/base.html'%}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{%load static%}
+
+{%block content%}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <div class=" container " style="margin-top: 100px;">
+            <h2 class="shadow p-3 mb-5 bg-white text-center rounded" >Get Latest News</h2><br>
+
+
+    <div class="row">
+
+        <form method="post" action="." id="news_form" >
+        <div class="form-row align-items-center">
+
+        <div class="col-lg-3 mb-sm-2">Fill any one or both field(s):</div>
+                    {% csrf_token %}
+                <div class="col-lg-3 mb-sm-3">
+                    {{form.country|add_class:"form-control" }}
+                </div>
+                <div class="col-lg-3 mb-sm-3">
+                    {{form.category|add_class:"form-control" }}
+                </div>
+                    <div class="col-lg-3 mb-sm-1">
+                        <input type="submit" id="news_submit" data-form-data="news_form" class="btn btn-elegant">
+                    <datalist id="countries">
+                        {%for item in countries %}
+                        <option value="{{item.0}}"></option>
+                        {%endfor%}
+                    </datalist>
+                    <datalist id="category">
+                        {%for item in cat %}
+                        <option value="{{item.0}}"></option>
+                        {%endfor%}
+                    </datalist>
+                </div>
+        </div>
+        </form>
+        <div style="margin-top: 30px;">
+            {%if articles.totalResults%}
+            Total {{articles.totalResults}} Results retrieved!
+            {%endif%}
+            {%for article in articles.articles|slice:"10"%}
+            <ul class="list-unstyled">
+                <li class="media">
+                    <img class="mr-3" width=250 height="150"
+                         style="border:2px solid black;margin:2px;border-radius:7px;padding:5px"
+                         src="{{article.urlToImage}}" onerror="this.src='https://i.imgur.com/2tRQjc5.png'"
+                         alt="static/media/news/hawk.jpg">
+                    <div class="media-body">
+                        <a href="{{article.url}}" target="_blank"><span><strong>{{article.title}}</strong></span></a><br>
+                        <span>{{article.publishedAt}}<strong> |</strong></span><span>By: {{article.author}}</span><br>
+                        <span>{{article.content}}</span>
+                    </div>
+                </li>
+            </ul>
+            {%endfor%}
+        </div>
+
+        <form style="width:650px" method="post" action="." >
+            <div style="margin-bottom: 20px;">
+                <div class=" mx-auto mb-5">
+                    <legend class="shadow p-3 mb-5 mt-5 bg-light rounded" style="color:blue;"><Strong> Search for news in Papers across the Globe!</Strong></legend>
+                    {% csrf_token %}
+                    {{form.search_term|add_class:"search"| add_class:"form-control"|attr:"placeholder:Search Here"|attr:"autocomplete:off"|attr:"width:100%"}}
+                </div>
+            </div>
+        </form>
+        <div class="mb-5"   style="margin-bottom: 20px;">
+            <h4 class="result"></h4>
+            <ul class="results">
+
+            </ul>
+        </div>
+    </div>
+</div>
+
+{%endblock%}
+{% block jquery %}
+    <script>
+    $(document).ready(function () {
+        $('#id_country').val('India');
+        $('#id_category').val('general');
+    })
+    </script>
+    <script>
+    var delayTimer;
+$('.search').keyup(function() {
+  clearTimeout(delayTimer);
+  $('.results').text('Loading...');
+
+  delayTimer = setTimeout(function() {
+    var text = $('.search').val();
+    console.log(text)
+    $.ajax({
+      url: '/search-live',
+      data: {
+        'search_term': text
+      },
+      dataType: 'json',
+      success: function(data) {
+        var result = '';
+        $('.results').text('');
+        data.forEach(function(item) {
+            result +='<li><a target="_blank" href='+item["url"]+'>'+item['title']+'</a></li>'
+            })
+        $(".results").append(result);
+        }
+        }),1000});
+        })
+
+    </script>
+    <script>
+
+    </script>
+{% endblock %}

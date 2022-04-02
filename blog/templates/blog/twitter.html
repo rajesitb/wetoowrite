@@ -1,0 +1,185 @@
+{% extends 'blog/base.html' %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block content %}
+
+    <style>
+        #pics > img {
+            width: 250px;
+            height: 200px;
+            border-radius: 5px;
+        }
+
+        #news {
+            width: 90%;
+            height: 800px;
+            margin: 0 auto 30px;
+            border-radius: 20px;
+            border: 2px solid darkblue;
+            /*content flowing out to be controlled*/
+            overflow: hidden;
+
+        }
+
+        #all_tweets {
+            float: left;
+            list-style-type: none;
+        }
+
+        #all_tweets ul {
+            margin: 5px;
+            padding: 5px;
+            list-style-type: none;
+            float: left;
+        }
+
+        #filter {
+            list-style-type: none;
+        }
+
+        #filter li {
+            float: left;
+            font-size: 25px;
+            border-right: 2px solid gray;
+            margin-right: 10px;
+            padding-right: 10px;
+        }
+
+        #filter li:last-child {
+            border-right: none;
+        }
+
+        #filter li a {
+            color: silver;
+            text-decoration: none;
+        }
+
+        #filter li a:hover {
+            color: gray;
+        }
+
+        #filter li.current a {
+            color: black;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+
+    </style>
+    <div class="container" style="margin-top: 100px;">
+        <div class="row">
+            <div class="col-lg-10">
+                <h4 class="blue-grey-text " style=" background-color: #faf5f5; font-family: 'Noto Serif', serif;">Shuffling the Twitter for You</h4>
+
+                <section class="box article-list alert alert-primary">
+                    <h2 class="text-center fab fa-twitter-square ">Latest Tweets</h2>
+                </section>
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <datalist id="countries">
+                        {% for country in new_list %}
+                            <option value="{{ country }}">
+                        {% endfor %}
+                    </datalist>
+                </form>
+                    {% if messages %}
+                        <ul class="messages">
+                            {% for message in messages %}
+                                <li class="{{ message.tags }} alert-danger">{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+
+                    {% if selected|length != 0 %}
+                        {% if messages %}
+                            <h3>Trends in India</h3>
+                            {% for name, url, vol in name %}
+                                <div class="child" style="    width: 20%;
+                    height: 100px;
+                    margin: 15px;
+                    float: left;
+                    border: 2px solid black;
+                    background-color:rgb(216, 221, 221);
+                    text-align: center;
+                    border-radius: 5px;
+                    overflow:hidden;
+                    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);">
+                                    <a href="{{ url }}" target="_blank">{{ name }}</a>
+                                    <h4>Volume:{{ vol }}</h4>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <h3>Trends in {{ selected }}</h3>
+                            {% for name, url, vol in name %}
+                                <div class="child" style="    width: 20%;
+                                    height: 100px;
+                                    margin: 15px;
+                                    float: left;
+                                    border: 2px solid black;
+                                    background-color:rgb(216, 221, 221);
+                                    text-align: center;
+                                    border-radius: 5px;
+                                    overflow:hidden;
+                                    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);">
+                                    <a href="{{ url }}" target="_blank">{{ name }}</a>
+                                    <h4>Volume:{{ vol }}</h4>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endif %}
+
+                    <h2>Tweets By</h2>
+                    <div id="news">
+                        <ul id="filter">
+                            <li class="current"><a href="#">All</a></li>
+                            <li><a href="#">News</a></li>
+                            <li><a href="#">Social</a></li>
+                            <li><a href="#">Financial</a></li>
+                        </ul>
+                        <div id="all_tweets">
+                            {% for tweet in function %}
+                                <ul>
+                                    <li>
+                                        <img class="rounded-circle" src="{{ tweet.user.profile_image_url }}"
+                                             alt=""> {{ tweet.user.name }}
+                                        <br>
+                                    </li>
+                                    <li>
+                                        <!--urls is key of entities dict. '0' is list index. learn the notation-->
+                                        {% if tweet.entities.urls.0.expanded_url %}
+                                            <b>Tweet: </b>
+                                            <a href="{{ tweet.entities.urls.0.expanded_url }}" target="_blank">
+                                                {{ tweet.text }}</a><br>
+                                        {% else %}
+                                            <b>Tweet: </b>{{ tweet.text }} <br>
+                                        {% endif %}
+                                    </li>
+                                    <li>
+                                        <b>Date: </b>{{ tweet.created_at }}<br>
+                                    </li>
+                                    <li>
+                                        <b>Retweets: </b>{{ tweet.retweet_count }}<br>
+                                    </li>
+                                    <li>
+                                        <b>Likes: </b> {{ tweet.favorite_count }} <br>
+                                    </li>
+                                    {% if tweet.entities.media.0.media_url %}
+                                        <li id="pics">
+                                            <img src="{{ tweet.entities.media.0.media_url }}" alt=" ">
+                                        </li>
+                                    {% endif %}
+                                    <hr>
+                                </ul>
+                            {% endfor %}
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block jquery %}
+    <script src="{% static 'js/jq.js' %}"></script>
+{% endblock %}

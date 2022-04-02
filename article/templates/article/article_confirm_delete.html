@@ -1,0 +1,22 @@
+{% extends 'article/basic.html' %}
+{% load static %}
+{% block article %}
+    <div class="container">
+        <div class="row">
+            <div class="card" style="margin-top: 200px; margin-bottom: 200px">
+                <div class="col-md-10 offset-md-2" >
+                    <form method="post" style="margin-top: 100px; margin-bottom: 50px;">{% csrf_token %}
+                        <p>Are you sure you want to delete "{{ object }}"?</p>
+                        <input type="submit" class="btn btn-danger" value="Confirm">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock article %}
+{% block jquery %}
+    <script>
+        $('#bottom-part').hide()
+    </script>
+{% endblock jquery %}

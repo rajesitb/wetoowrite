@@ -1,0 +1,44 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% load blog_tags %}
+
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% block content %}
+    <div class="container" style="margin-top: 100px; margin-bottom: 50px;">
+        <div class="row">
+            <div class="col-md-10 mt-5">
+               {% file_ends_with object.file as video %}
+                {% if not video %}
+                <figure>
+                    <a href="#" id="img"><img src="{{ object.file.url }}" height="200px" width="300px" alt=""></a>
+                    <figcaption>
+                        <p>Current Picture</p>
+                    </figcaption>
+                </figure>
+                {% endif %}
+                <form action="" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <legend>
+                        {% if not video %}Update Picture{% elif video %} Update Video {% endif %}
+                    </legend>
+                    {{ form|crispy }}
+                    <input type="submit" class="btn btn-outline-indigo">
+<small>If your file size is more than 1 Mb, delete this post. Click <a href="{% url 'images-large' object.photo_story.id %}">here</a> for uploading a video or image files larger than 1Mb
+</small>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+{% block jquery %}
+    <script>
+        $(document).ready(function () {
+            $('#id_file').addClass('btn btn-primary');
+            $('a#img').click(function (e) {
+                e.preventDefault();
+                $('#id_file').click()
+            })
+        })
+    </script>
+{% endblock jquery %}
