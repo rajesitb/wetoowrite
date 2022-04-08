@@ -163,17 +163,17 @@ EMAIL_HOST_USER = "from.wetoowrite@gmail.com"
 EMAIL_HOST_PASSWORD = os.environ.get('email_pass_mtb')
 EMAIL_USE_TLS = True
 
-if os.name == 'nt':
-    import platform
-
-    OSGEO4W = r"C:\OSGeo4W"
-    if '64' in platform.architecture()[0]:
-        OSGEO4W += "64"
-    assert os.path.isdir(OSGEO4W), "Directory does not exist: " + OSGEO4W
-    os.environ['OSGEO4W_ROOT'] = OSGEO4W
-    os.environ['GDAL_DATA'] = OSGEO4W + r"\share\gdal"
-    os.environ['PROJ_LIB'] = OSGEO4W + r"\share\proj"
-    os.environ['PATH'] = OSGEO4W + r"\bin;" + os.environ['PATH']
+# if os.name == 'nt':
+#     import platform
+#
+#     OSGEO4W = r"C:\OSGeo4W"
+#     if '64' in platform.architecture()[0]:
+#         OSGEO4W += "64"
+#     assert os.path.isdir(OSGEO4W), "Directory does not exist: " + OSGEO4W
+#     os.environ['OSGEO4W_ROOT'] = OSGEO4W
+#     os.environ['GDAL_DATA'] = OSGEO4W + r"\share\gdal"
+#     os.environ['PROJ_LIB'] = OSGEO4W + r"\share\proj"
+#     os.environ['PATH'] = OSGEO4W + r"\bin;" + os.environ['PATH']
 
 STATIC_URL = '/static/'
 
@@ -187,11 +187,19 @@ if not DEBUG:
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
     DATABASES = {
-        'default': dj_database_url.config(
-            # Feel free to alter this value to suit your needs.
-            default='postgresql://postgres:postgres@localhost:5432/wealth',
-            conn_max_age=600
-        )
+        # 'default': dj_database_url.config(
+        #     # Feel free to alter this value to suit your needs.
+        #     default='postgresql://postgres:postgres@localhost:5432/wealth',
+        #     conn_max_age=600
+        # )
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'humaurtum',
+            'USER': 'humaurtum',
+            'PASSWORD': 'Mr7c5Mn11xvT8wgn47I33A3N4XodZMGN',
+            'HOST': 'dpg-c94it68ivq017dhvbte0-a.oregon-postgres.render.com',
+            'PORT': '5432',
+        }
     }
     LOGGING = {
         'version': 1,
@@ -243,6 +251,6 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 AWS_S3_REGION_NAME = 'us-east-1'
 # AWS_S3_ENDPOINT_URL = 'https://s3-us-east-1.amazonaws.com'
 
-GDAL_LIBRARY_PATH = os.getenv('GDAL_LIBRARY_PATH')
-GEOS_LIBRARY_PATH = os.getenv('GEOS_LIBRARY_PATH')
+# GDAL_LIBRARY_PATH = os.getenv('GDAL_LIBRARY_PATH')
+# GEOS_LIBRARY_PATH = os.getenv('GEOS_LIBRARY_PATH')
 
