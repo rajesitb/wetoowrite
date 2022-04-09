@@ -178,6 +178,7 @@ EMAIL_USE_TLS = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+GEOIP_PATH = os.path.join(BASE_DIR, "blog/geoip")
 
 if not DEBUG:
     # Tell Django to copy statics to the `staticfiles` directory
